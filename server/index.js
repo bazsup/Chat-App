@@ -2,8 +2,9 @@ require('dotenv').config()
 
 const app = require('express')()
 const next = require('next')
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
+// const server = require('http').Server(app)
+const socketPort = parseInt(process.env.SOCKET_PORT, 10) || 8888
+const io = require('socket.io').listen(socketPort)
 
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -41,7 +42,7 @@ nextApp.prepare().then(() => {
     return handle(req, res)
   })
 
-  server.listen(port, async err => {
+  app.listen(port, async err => {
     if (err) throw err
     console.log(`> Ready on http://localhost:${port}`)
     // console.log('res', resp)
